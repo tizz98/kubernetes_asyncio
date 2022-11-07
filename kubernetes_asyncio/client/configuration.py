@@ -310,7 +310,17 @@ conf = client.Configuration(
         :param value: The debug status, True or False.
         :type: bool
         """
+        try:
+            current_value = self.__debug
+        except AttributeError:
+            current_value = None
+
+        is_changing = current_value != value
         self.__debug = value
+
+        if not is_changing:
+            return
+
         if self.__debug:
             # if debug status is True, turn on debug logging
             for _, logger in six.iteritems(self.logger):
